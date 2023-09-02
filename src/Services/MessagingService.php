@@ -3,6 +3,7 @@
 namespace Tots\CloudMessaging\Services;
 
 use GuzzleHttp\Psr7\Request;
+use Google\Auth\Credentials\ServiceAccountCredentials;
 
 class MessagingService
 {
@@ -10,6 +11,16 @@ class MessagingService
      * URL de la API
      */
     const BASE_URL = 'https://fcm.googleapis.com/v1/projects/';
+    const API_CLIENT_SCOPES = [
+        //'https://www.googleapis.com/auth/iam',
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/firebase',
+        //'https://www.googleapis.com/auth/firebase.database',
+        'https://www.googleapis.com/auth/firebase.messaging',
+        //'https://www.googleapis.com/auth/firebase.remoteconfig',
+        //'https://www.googleapis.com/auth/userinfo.email',
+        //'https://www.googleapis.com/auth/securetoken',
+    ];
 
     /**
      *
@@ -71,6 +82,15 @@ class MessagingService
 
     protected function generateRequest($method, $path, $params = null)
     {
+        $serviceAccount = new ServiceAccountCredentials(self::API_CLIENT_SCOPES, $this->apiKey);
+        $authToken = $serviceAccount->fetchAuthToken();
+
+        if(is_array($authToken)){
+            $accessToken = $authToken['access_token'];
+        } else {
+            $accessToken = $authToken;
+        }
+
         $body = null;
         if($params != null){
             $body = json_encode($params);
@@ -81,7 +101,8 @@ class MessagingService
             self::BASE_URL . $this->projectId . $path, 
             [
                 'Content-Type' => 'application/json',
-                'Authorization' => 'key=' . $this->apiKey
+                //'Authorization' => 'key=' . $this->apiKey
+                'Authorization' => 'Bearer ' . $accessToken
             ], $body);
 
         $response = $this->guzzle->send($request);

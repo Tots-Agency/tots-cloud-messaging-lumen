@@ -19,6 +19,7 @@
     "require": {
         "php": "^8.0",
         "laravel/lumen-framework": "^9.0|^10.0",
-        "guzzlehttp/guzzle": "^7.7"
+        "guzzlehttp/guzzle": "^7.7",
+        "google/auth": "^1.29"
     }
 }

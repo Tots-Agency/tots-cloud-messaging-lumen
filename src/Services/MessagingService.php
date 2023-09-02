@@ -12,14 +12,9 @@ class MessagingService
      */
     const BASE_URL = 'https://fcm.googleapis.com/v1/projects/';
     const API_CLIENT_SCOPES = [
-        //'https://www.googleapis.com/auth/iam',
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/firebase',
-        //'https://www.googleapis.com/auth/firebase.database',
         'https://www.googleapis.com/auth/firebase.messaging',
-        //'https://www.googleapis.com/auth/firebase.remoteconfig',
-        //'https://www.googleapis.com/auth/userinfo.email',
-        //'https://www.googleapis.com/auth/securetoken',
     ];
 
     /**
@@ -49,7 +44,7 @@ class MessagingService
         $this->guzzle = new \GuzzleHttp\Client();
     }
 
-    protected function sendMessageToDevices($tokens, $title, $body)
+    public function sendMessageToDevices($tokens, $title, $body)
     {
         return $this->sendMessageBase([
             'message' => [
@@ -62,7 +57,7 @@ class MessagingService
         ]);
     }
 
-    protected function sendMessageToSpecificDevive($token, $title, $body)
+    public function sendMessageToSpecificDevive($token, $title, $body)
     {
         return $this->sendMessageBase([
             'message' => [
@@ -75,7 +70,7 @@ class MessagingService
         ]);
     }
 
-    protected function sendMessageBase($params = null)
+    public function sendMessageBase($params = null)
     {
         return $this->generateRequest('POST', '/messages:send', $params);
     }

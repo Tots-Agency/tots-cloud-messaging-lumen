@@ -44,7 +44,7 @@ class MessagingService
         $this->guzzle = new \GuzzleHttp\Client();
     }
 
-    public function sendMessageToDevices($tokens, $title, $body, $data = null)
+    public function sendMessageToDevices($tokens, $title, $body, $data = null, $apns = null)
     {
         return $this->sendMessageBase([
             'message' => [
@@ -53,12 +53,13 @@ class MessagingService
                     'title' => $title,
                     'body' => $body,
                 ],
-                'data' => $data
+                'data' => $data,
+                'apns' => $apns
             ],
         ]);
     }
 
-    public function sendMessageToSpecificDevive($token, $title, $body, $data = null)
+    public function sendMessageToSpecificDevive($token, $title, $body, $data = null, $apns = null)
     {
         return $this->sendMessageBase([
             'message' => [
@@ -67,7 +68,8 @@ class MessagingService
                     'title' => $title,
                     'body' => $body,
                 ],
-                'data' => $data
+                'data' => $data,
+                'apns' => $apns
             ],
         ]);
     }
